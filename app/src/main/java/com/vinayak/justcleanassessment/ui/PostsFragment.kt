@@ -2,10 +2,8 @@ package com.vinayak.justcleanassessment.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -35,12 +33,13 @@ class PostsFragment:Fragment(R.layout.fragment_posts), PostsAdapter.OnItemClickL
             }
 
         }
-        mainViewModel.res.observe(viewLifecycleOwner, {
+        mainViewModel.posts.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
 
                     it.data.let { res ->
                         postsAdapter.submitList(res!!)
+                        mainViewModel.insertPosts(res)
                     }
                 }
                 Status.LOADING -> {
@@ -48,8 +47,7 @@ class PostsFragment:Fragment(R.layout.fragment_posts), PostsAdapter.OnItemClickL
                 }
                 Status.ERROR -> {
 
-                    Snackbar.make(view, "Something went wrong", Snackbar.LENGTH_SHORT).show()
-                    // Toast.makeText(this@PostsFragment.requireContext(),it.message, Toast.LENGTH_LONG).show()
+                    Snackbar.make(view, it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
         })
