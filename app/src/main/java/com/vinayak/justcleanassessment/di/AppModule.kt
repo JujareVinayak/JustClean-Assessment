@@ -1,8 +1,11 @@
 package com.vinayak.justcleanassessment.di
 
+import android.app.Application
+import androidx.room.Room
 import com.vinayak.justcleanassessment.data.api.ApiHelper
 import com.vinayak.justcleanassessment.data.api.ApiHelperImpl
 import com.vinayak.justcleanassessment.data.api.ApiService
+import com.vinayak.justcleanassessment.db.PostDatabase
 import com.vinayak.justcleanassessment.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -44,5 +47,17 @@ object AppModule{
     @Provides
     @Singleton
     fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper = apiHelper
+
+
+    @Provides
+    @Singleton
+    fun provideDatabase(
+        app: Application
+    ) = Room.databaseBuilder(app, PostDatabase::class.java, "post_database")
+        .fallbackToDestructiveMigration()
+        .build()
+
+    @Provides
+    fun provideTaskDao(db: PostDatabase) = db.postDAO()
 
 }
