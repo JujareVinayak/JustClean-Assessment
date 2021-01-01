@@ -33,7 +33,7 @@ class PostsAdapter(private val listener: OnItemClickListener): RecyclerView.Adap
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = differ.currentList.get(index = position)
         holder.binding.postId.text = post.id.toString()
-        holder.binding.userId.text = post.getUserId().toString()
+        holder.binding.userId.text = post.userId.toString()
         holder.binding.title.text = post.getTitle().toString()
         holder.binding.body.text = post.getBody().toString()
     }
@@ -46,8 +46,8 @@ class PostsAdapter(private val listener: OnItemClickListener): RecyclerView.Adap
                 cardView.setOnClickListener {
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        val task = differ.currentList[position]
-                        listener.onItemClick(task)
+                        val post = differ.currentList[position]
+                        listener.onItemClick(post)
                     }
                 }
             }
