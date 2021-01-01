@@ -7,5 +7,5 @@ import javax.inject.Inject
 class ApiHelperImpl @Inject constructor(
     private val apiService: ApiService
 ):ApiHelper{
-    override suspend fun getPosts(): Response<Post> = apiService.getPosts()
+    override suspend fun getPosts(): Response<List<Post>> = apiService.getPosts()
 }

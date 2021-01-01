@@ -1,20 +1,21 @@
 package com.vinayak.justcleanassessment.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
-
-
-class Post {
+@Parcelize
+class Post:Parcelable {
     @SerializedName("userId")
     @Expose
     private var userId: Int? = null
 
     @SerializedName("id")
     @Expose
-    private var id: Int? = null
+    private var _id: Int? = null
+    val id : Int?
+        get() = _id
 
     @SerializedName("title")
     @Expose
@@ -30,14 +31,6 @@ class Post {
 
     fun setUserId(userId: Int?) {
         this.userId = userId
-    }
-
-    fun getId(): Int? {
-        return id
-    }
-
-    fun setId(id: Int?) {
-        this.id = id
     }
 
     fun getTitle(): String? {
