@@ -1,15 +1,17 @@
 package com.vinayak.justcleanassessment.data
 
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class Post:Parcelable {
-    @SerializedName("userId")
-    @Expose
-    private var userId: Int? = null
+data class Post( @SerializedName("userId")
+                 @Expose @PrimaryKey(autoGenerate = true)
+                 @ColumnInfo(name = "user_id") var userId: Int?):Parcelable {
+
 
     @SerializedName("id")
     @Expose
@@ -24,14 +26,6 @@ class Post:Parcelable {
     @SerializedName("body")
     @Expose
     private var body: String? = null
-
-    fun getUserId(): Int? {
-        return userId
-    }
-
-    fun setUserId(userId: Int?) {
-        this.userId = userId
-    }
 
     fun getTitle(): String? {
         return title
