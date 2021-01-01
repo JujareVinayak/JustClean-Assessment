@@ -6,4 +6,6 @@ class MainRepository @Inject constructor(
     private val apiHelper:ApiHelper
 ){
     suspend fun getPosts() = apiHelper.getPosts()
+
+    suspend fun getComments(postId: Int) = apiHelper.getComments(postId)
 }
