@@ -9,7 +9,7 @@ import com.vinayak.justcleanassessment.data.Post
 @Dao
 interface PostDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPosts(post: List<Post>)
 
     @Insert
@@ -50,4 +50,5 @@ interface PostDAO {
 
     @Query("SELECT * FROM post_data_table where favorite = 1")
     fun getFavoritePosts(): LiveData<List<Post>>
+
 }
