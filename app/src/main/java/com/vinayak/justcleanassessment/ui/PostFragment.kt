@@ -1,7 +1,5 @@
 package com.vinayak.justcleanassessment.ui
 
-import android.R.attr.defaultValue
-import android.R.attr.key
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -29,7 +27,7 @@ class PostFragment:Fragment(R.layout.fragment_post) {
         val bundle = this.arguments
         var post: Post? = null
         if (bundle != null) {
-             post = bundle.getParcelable<Post>("post")!!
+             post = bundle.getParcelable("post")!!
         }
 
 
@@ -38,6 +36,16 @@ class PostFragment:Fragment(R.layout.fragment_post) {
                 adapter = commentsAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
+            }
+
+            addFavorite.setOnClickListener {
+                post!!.favorite = 1
+                mainViewModel.updatePost(post)
+            }
+
+            removeFavorite.setOnClickListener {
+                post!!.favorite = 0
+                mainViewModel.updatePost(post)
             }
 
         }
@@ -55,11 +63,16 @@ class PostFragment:Fragment(R.layout.fragment_post) {
 
                 }
                 Status.ERROR -> {
-
+                    mainViewModel.getCommentsFromDb(post?.id).observe(viewLifecycleOwner,{
+                        commentsAdapter.submitList(it)
+                    })
                     Snackbar.make(view, it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
         })
 
+
+
     }
-}
+
+    }

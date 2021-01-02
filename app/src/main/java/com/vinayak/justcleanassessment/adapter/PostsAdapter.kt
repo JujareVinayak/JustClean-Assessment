@@ -10,6 +10,7 @@ import com.vinayak.justcleanassessment.databinding.ItemPostBinding
 
 class PostsAdapter(private val listener: OnItemClickListener): RecyclerView.Adapter<PostsAdapter.PostViewHolder>()  {
 
+
     val diffUtil = object : DiffUtil.ItemCallback<Post>(){
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.id == newItem.id
@@ -34,8 +35,8 @@ class PostsAdapter(private val listener: OnItemClickListener): RecyclerView.Adap
         val post = differ.currentList.get(index = position)
         holder.binding.postId.text = post.id.toString()
         holder.binding.userId.text = post.userId.toString()
-        holder.binding.title.text = post.getTitle().toString()
-        holder.binding.body.text = post.getBody().toString()
+        holder.binding.title.text = post.title
+        holder.binding.body.text = post.body
     }
 
     override fun getItemCount(): Int = differ.currentList.size

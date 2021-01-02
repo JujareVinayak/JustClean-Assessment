@@ -8,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.vinayak.justcleanassessment.data.Comment
 import com.vinayak.justcleanassessment.data.Post
 import com.vinayak.justcleanassessment.data.api.MainRepository
-import com.vinayak.justcleanassessment.db.PostDAO
+import com.vinayak.justcleanassessment.db.PostRepository
 import com.vinayak.justcleanassessment.utils.Resource
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 class MainViewModel @ViewModelInject constructor(
-    private val mainRepository: MainRepository, private val postDAO: PostDAO
+    private val mainRepository: MainRepository, private val postRepository: PostRepository
 ): ViewModel(){
 
     private val _posts = MutableLiveData<Resource<List<Post>>>()
@@ -47,11 +47,11 @@ class MainViewModel @ViewModelInject constructor(
     }
 
      fun insertPosts(list: List<Post>) = viewModelScope.launch {
-        postDAO.insertPosts(list)
+         postRepository.insertPosts(list)
      }
 
     fun insertComments(list: List<Comment>) = viewModelScope.launch {
-        postDAO.insertComments(list)
+        postRepository.insertComments(list)
     }
 
 
@@ -69,5 +69,15 @@ class MainViewModel @ViewModelInject constructor(
             _comments.postValue(Resource.error("No Internet Connection",null))
         }
     }
+
+    fun updatePost(post: Post) = viewModelScope.launch {
+        postRepository.updatePost(post)
+    }
+
+     fun getFavoritePosts() = postRepository.favPosts
+
+     fun getOfflinePosts() = postRepository.posts
+
+    fun getCommentsFromDb(postId: Int) = postRepository.commentsByPostId(postId)
 
 }

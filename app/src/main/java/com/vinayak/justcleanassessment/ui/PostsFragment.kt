@@ -46,7 +46,9 @@ class PostsFragment:Fragment(R.layout.fragment_posts), PostsAdapter.OnItemClickL
 
                 }
                 Status.ERROR -> {
-
+                    mainViewModel.getOfflinePosts().observe(viewLifecycleOwner, {
+                        postsAdapter.submitList(it)
+                    })
                     Snackbar.make(view, it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
