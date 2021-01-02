@@ -44,4 +44,10 @@ interface PostDAO {
 
     @Query("SELECT * FROM comment_data_table")
     fun getAllComments(): LiveData<List<Comment>>
+
+    @Query("SELECT * FROM comment_data_table where post_id = :postId")
+    fun getAllCommentsByPostId(postId: Int): LiveData<List<Comment>>
+
+    @Query("SELECT * FROM post_data_table where favorite = 1")
+    fun getFavoritePosts(): LiveData<List<Post>>
 }

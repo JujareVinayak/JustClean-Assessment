@@ -12,32 +12,17 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Post( @SerializedName("userId")
                  @Expose
-                 @ColumnInfo(name = "user_id") var userId: Int?,
+                 @ColumnInfo(name = "user_id") var userId: Int,
                  @PrimaryKey
                  @SerializedName("id")
                  @Expose
-                 var id : Int? = null):Parcelable {
-    @SerializedName("title")
-    @Expose
-    private var title: String? = null
-
-    @SerializedName("body")
-    @Expose
-    private var body: String? = null
-
-    fun getTitle(): String? {
-        return title
-    }
-
-    fun setTitle(title: String?) {
-        this.title = title
-    }
-
-    fun getBody(): String? {
-        return body
-    }
-
-    fun setBody(body: String?) {
-        this.body = body
-    }
-}
+                 var id : Int,
+                 @SerializedName("title")
+                 @Expose
+                 var title: String,
+                 @SerializedName("body")
+                 @Expose
+                 var body: String,
+                 @Expose(deserialize = false, serialize = false)
+                 var favorite: Int
+):Parcelable
