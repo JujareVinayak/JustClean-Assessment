@@ -31,7 +31,7 @@ class MainViewModel @ViewModelInject constructor(
         getPosts()
     }
 
-    private fun getPosts()  = viewModelScope.launch {
+      fun getPosts()  = viewModelScope.launch {
         _posts.postValue(Resource.loading(null))
         try {
             mainRepository.getPosts().let {
@@ -78,6 +78,6 @@ class MainViewModel @ViewModelInject constructor(
 
      fun getOfflinePosts() = postRepository.posts
 
-    fun getCommentsFromDb(postId: Int) = postRepository.commentsByPostId(postId)
+     fun getCommentsFromDb(postId: Int) = postRepository.commentsByPostId(postId)
 
 }

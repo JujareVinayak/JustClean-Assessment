@@ -1,9 +1,13 @@
 package com.vinayak.justcleanassessment.ui
 
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -26,10 +30,20 @@ import com.vinayak.justcleanassessment.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class PostsFragment:Fragment(R.layout.fragment_posts), PostsAdapter.OnItemClickListener {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var  builder: AlertDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        requireActivity().registerReceiver(networkReceiver, intentFilter)
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentPostsBinding.bind(view)
@@ -121,4 +135,40 @@ class PostsFragment:Fragment(R.layout.fragment_posts), PostsAdapter.OnItemClickL
         return dialog
     }
 
+    //Broadcast Receiver for the internet.
+    private val networkReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent!!.action
+            when(action){
+                ConnectivityManager.CONNECTIVITY_ACTION -> {
+                    val connManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    val netInfos = connManager.allNetworkInfo
+                    for (netInfo in netInfos) {
+                        when (netInfo.type) {
+                            ConnectivityManager.TYPE_MOBILE -> {
+                                if (netInfo.state == NetworkInfo.State.CONNECTED)
+                                    mainViewModel.getPosts()
+                            }
+                            ConnectivityManager.TYPE_MOBILE_HIPRI -> {
+                                if (netInfo.state == NetworkInfo.State.CONNECTED)
+                                mainViewModel.getPosts()
+                            }
+                            ConnectivityManager.TYPE_WIFI -> {
+                                if (netInfo.state == NetworkInfo.State.CONNECTED)
+                                mainViewModel.getPosts()
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unregisterReceiver(networkReceiver)
+    }
 }
